@@ -1,14 +1,19 @@
 #ifndef SRC_TOKEN_H_
 #define SRC_TOKEN_H_
 
-class Token {
- public:
-        virtual bool isEnd();
+#include <string>
+
+using namespace std;
+
+enum TokenType {
+    END, KEYWORD
 };
 
-class TokenEOF : public Token {
- public:
-        bool isEnd();
+class Token {
+public:
+
+    string name;
+    TokenType type;
 };
 
 #endif  //  SRC_TOKEN_H_
