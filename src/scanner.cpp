@@ -1,3 +1,4 @@
+#include <set>
 #include "scanner.h"
 #include "token.h"
 
@@ -15,19 +16,38 @@ char Scanner::nextChar() {
 }
 
 bool isLetter(char ch) {
-    return ch >= 'a' && ch <= 'z';
+    return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z');
+}
+
+bool isDigit(char ch) {
+    return ch >= '0' && ch <= '9';
+}
+
+bool isUnderline(char ch) {
+    return ch == '_';
+}
+
+bool isKeyword(const string &name) {
+    std::set<string> keywords = {
+            "int", "auto", "break", "case", "char", "const", "continue", "default", "do",
+            "double", "else", "enum", "extern", "float", "for", "goto", "if",
+            "int", "long", "register", "return", "short", "signed", "sizeof", "static",
+            "struct", "switch", "typedef", "union", "unsigned", "void", "volatile", "while"
+    };
+    return keywords.find(name) != keywords.end();
 }
 
 Token *Scanner::getNextToken() {
     char ch = nextChar();
-    if (isLetter(ch)) {
+    if (isLetter(ch) || isUnderline(ch)) {
         string name = "";
         do {
             name.push_back(ch);
             ch = nextChar();
-        } while (isLetter(ch));
+        } while (isLetter(ch) || isDigit(ch) || isUnderline(ch));
+
         auto *token = new Token();
-        token->type = KEYWORD;
+        token->type = isKeyword(name) ? KEYWORD : ID;
         token->name = name;
         return token;
     }

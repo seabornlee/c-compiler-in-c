@@ -5,11 +5,12 @@
     <option name="languageLevel" value="ES6" />
   </component>
   <component name="LimitedWIPSettings">
-    <option name="autoRevertEnabled" value="true" />
     <option name="commitMessageSource" value="ChangeListName" />
+    <option name="doNotRevertTests" value="true" />
     <option name="notificationIntervalInMinutes" value="2" />
     <option name="notifyOnTcrRevert" value="true" />
     <option name="tcrEnabled" value="true" />
     <option name="timeTillRevert" value="10" />
+    <option name="watchdogEnabled" value="false" />
   </component>
 </project>
