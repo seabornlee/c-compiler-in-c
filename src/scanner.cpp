@@ -4,7 +4,6 @@
 Scanner::Scanner(std::string text) {
 }
 
-Token Scanner::getNextToken() {
-    Token token;
-    return token;
+Token* Scanner::getNextToken() {
+    return new TokenEOF();
 }

@@ -3,6 +3,11 @@
 
 class Token {
  public:
+        virtual bool isEnd();
+};
+
+class TokenEOF : public Token {
+ public:
         bool isEnd();
 };
 

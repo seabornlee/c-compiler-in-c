@@ -5,6 +5,6 @@
 
 TEST(ScannerTest, getNextTokenShouldReturnEndWhenEnded) {
     Scanner scanner("");
-    Token token = scanner.getNextToken();
-    EXPECT_TRUE(token.isEnd());
+    Token *token = scanner.getNextToken();
+    EXPECT_TRUE(token->isEnd());
 }
