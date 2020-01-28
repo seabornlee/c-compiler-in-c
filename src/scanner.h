@@ -10,4 +10,5 @@ class Scanner {
 private:
     char nextChar();
     int index;
+    char currentChar = '\0';
 };

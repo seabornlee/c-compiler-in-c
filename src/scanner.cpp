@@ -64,57 +64,63 @@ bool isKeyword(const string &name) {
 }
 
 Token *Scanner::getNextToken() {
-    char ch;
-    while ((ch = nextChar()) != EOF) {
-        if (isLetter(ch) || isUnderline(ch)) {
+    while (currentChar != EOF) {
+        if (isLetter(currentChar) || isUnderline(currentChar)) {
             string name = "";
             do {
-                name.push_back(ch);
-                ch = nextChar();
-            } while (isLetter(ch) || isDigit(ch) || isUnderline(ch));
+                name.push_back(currentChar);
+                currentChar = nextChar();
+            } while (isLetter(currentChar) || isDigit(currentChar) || isUnderline(currentChar));
 
             TokenType type = isKeyword(name) ? KEYWORD : ID;
             return new Token(type, name);
         }
 
-        if (isAssign(ch)) {
+        if (isAssign(currentChar)) {
+            char ch = currentChar;
+            currentChar = nextChar();
             return new Token(ASSIGN, ch);
         }
 
-        if (isOperator(ch)) {
+        if (isOperator(currentChar)) {
             char next = nextChar();
             if (isAssign(next)) {
                 string name;
-                name.push_back(ch);
+                name.push_back(currentChar);
                 name.push_back(next);
                 return new Token(ASSIGN, name);
             }
 
-            return new Token(OPERATOR, ch);
+            return new Token(OPERATOR, currentChar);
         }
 
-        if (isSymbol(ch)) {
+        if (isSymbol(currentChar)) {
+            char ch = currentChar;
+            currentChar = nextChar();
             return new Token(SYMBOL, ch);
         }
 
-        if (isDigit(ch)) {
+        if (isDigit(currentChar)) {
             string value;
             do {
-                value.push_back(ch);
-                ch = nextChar();
-            } while (isDigit(ch));
+                value.push_back(currentChar);
+                currentChar = nextChar();
+            } while (isDigit(currentChar));
+
             return new Token(NUMBER, value);
         }
 
-        if (isStartOfString(ch)) {
+        if (isStartOfString(currentChar)) {
             string value;
-            ch = nextChar();
-            while (isNotEndOfString(ch)) {
-                value.push_back(ch);
-                ch = nextChar();
+            currentChar = nextChar();
+            while (isNotEndOfString(currentChar)) {
+                value.push_back(currentChar);
+                currentChar = nextChar();
             }
             return new Token(STRING, value);
         }
+
+        currentChar = nextChar();
     }
 
     return new Token(END);

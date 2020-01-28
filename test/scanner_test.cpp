@@ -152,14 +152,33 @@ TEST_P(StringParameterizedTestFixture, getNextTokenShouldReturnIdentifierToken) 
     EXPECT_EQ(str.substr(1, str.length() - 2), token->sValue);
 }
 
-TEST(ScannerTest, shouldParseStatement) {
-    Scanner scanner("int i = 0;");
-    Token *intToken = scanner.getNextToken();
-    EXPECT_EQ(KEYWORD, intToken->type);
-}
-
 TEST(ScannerTest, getNextTokenShouldIgnorSpace) {
     Scanner scanner(" \t");
     Token *token = scanner.getNextToken();
     EXPECT_EQ(END, token->type);
+}
+
+TEST(ScannerTest, shouldParseStatement) {
+    Scanner scanner("int i = 0;");
+    Token *intToken = scanner.getNextToken();
+    EXPECT_EQ(KEYWORD, intToken->type);
+
+    Token *identifierToken = scanner.getNextToken();
+    EXPECT_EQ(ID, identifierToken->type);
+    EXPECT_EQ("i", identifierToken->rawText);
+
+    Token *assignToken = scanner.getNextToken();
+    EXPECT_EQ(ASSIGN, assignToken->type);
+    EXPECT_EQ("=", assignToken->rawText);
+
+    Token *numberToken = scanner.getNextToken();
+    EXPECT_EQ(NUMBER, numberToken->type);
+    EXPECT_EQ(0, numberToken->nValue);
+
+    Token *symbolToken = scanner.getNextToken();
+    EXPECT_EQ(SYMBOL, symbolToken->type);
+    EXPECT_EQ(";", symbolToken->rawText);
+
+    Token *endToken = scanner.getNextToken();
+    EXPECT_EQ(END, endToken->type);
 }
