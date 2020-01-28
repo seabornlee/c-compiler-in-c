@@ -3,27 +3,21 @@ name: ci
 on: [push, pull_request]
 
 jobs:
-  checkout:
-    name: Update Google Test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: checkout
-        run: make checkout
-
-  test:
-    name: Google Test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: test
-        run: make test
-
   check:
-    name: cppcheck
+    name: Static code check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: install cppcheck
+      - name: cppcheck
         run:
           sudo apt-get update && sudo apt-get -y install cppcheck && make check
+
+  test:
+    name: Run tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: checkout submodule GoogleTest
+        run: make checkout
+      - name: run tests
+        run: make test
