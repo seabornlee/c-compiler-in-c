@@ -27,6 +27,17 @@ bool isUnderline(char ch) {
     return ch == '_';
 }
 
+bool isAssign(char ch) {
+    return ch == '=';
+}
+
+bool isOperator(char ch) {
+    std::set<char> operators = {
+            '+', '-', '*', '/', '%'
+    };
+    return operators.find(ch) != operators.end();
+}
+
 bool isKeyword(const string &name) {
     std::set<string> keywords = {
             "int", "auto", "break", "case", "char", "const", "continue", "default", "do",
@@ -49,6 +60,20 @@ Token *Scanner::getNextToken() {
         auto *token = new Token();
         token->type = isKeyword(name) ? KEYWORD : ID;
         token->name = name;
+        return token;
+    }
+
+    if (isAssign(ch)) {
+        auto *token = new Token();
+        token->type = ASSIGN;
+        token->name = ch;
+        return token;
+    }
+
+    if (isOperator(ch)) {
+        auto *token = new Token();
+        token->type = OPERATOR;
+        token->name = ch;
         return token;
     }
 
