@@ -1,12 +1,8 @@
 name: ci
 
 on: [push]
+
 jobs:
-  check:
-    name: clang-tidy
-    runs-on: ubuntu-latest
+  test:
     steps:
-      - name: clang-tidy check
-        uses: smay1613/clang-tidy-action@master
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: make test
