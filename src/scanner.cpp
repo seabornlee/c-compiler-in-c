@@ -2,7 +2,7 @@
 #include "scanner.h"
 #include "token.h"
 
-Scanner::Scanner(std::string text) {
+Scanner::Scanner(const std::string& text) {
     this->text = text;
     index = 0;
 }
@@ -146,7 +146,7 @@ Token *Scanner::tokenizeAssign() {
 }
 
 Token *Scanner::tokenizeIdOrKeyword() {
-    string name = "";
+    string name;
     do {
         name.push_back(currentChar());
         moveToNextChar();

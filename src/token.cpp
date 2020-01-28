@@ -1,6 +1,6 @@
 #include "token.h"
 
-Token::Token(TokenType type, string rawText) {
+Token::Token(TokenType type, const string& rawText) {
     this->type = type;
     this->rawText = rawText;
 

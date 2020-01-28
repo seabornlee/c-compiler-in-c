@@ -12,7 +12,7 @@ enum TokenType {
 class Token {
 public:
 
-    Token(TokenType type, string rawText);
+    Token(TokenType type, const string& rawText);
 
     Token(TokenType type, char ch);
 
@@ -20,7 +20,7 @@ public:
 
     string rawText;
     TokenType type;
-    int nValue;
+    int nValue{};
     string sValue;
 };
 
