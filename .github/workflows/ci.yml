@@ -3,6 +3,14 @@ name: ci
 on: [push]
 
 jobs:
+  checkout:
+    name: Update Google Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: checkout
+        run: make checkout
+
   test:
     name: Google Test
     runs-on: ubuntu-latest

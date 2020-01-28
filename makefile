@@ -4,8 +4,11 @@ BUILD_DIR = build
 test: build
 	cd $(BUILD_DIR) && cmake .. && make all && cd test && ctest -V
 
-build:
+build: checkout
 	mkdir $(BUILD_DIR)
+
+checkout:
+	git submodule init && git submodule update
 
 clean:
 	rm -r $(BUILD_DIR)
