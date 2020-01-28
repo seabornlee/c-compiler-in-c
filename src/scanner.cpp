@@ -69,7 +69,7 @@ Token *Scanner::getNextToken() {
     }
 
     if (isAssign(ch)) {
-        return new Token(ASSIGN, string(1, ch));
+        return new Token(ASSIGN, ch);
     }
 
     if (isOperator(ch)) {
@@ -81,11 +81,11 @@ Token *Scanner::getNextToken() {
             return new Token(ASSIGN, name);
         }
 
-        return new Token(OPERATOR, string(1, ch));
+        return new Token(OPERATOR, ch);
     }
 
     if (isSymbol(ch)) {
-        return new Token(SYMBOL, string(1, ch));
+        return new Token(SYMBOL, ch);
     }
 
     return new Token(END);

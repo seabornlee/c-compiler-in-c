@@ -14,6 +14,8 @@ public:
 
     Token(TokenType type, string name);
 
+    Token(TokenType type, char ch);
+
     Token(TokenType type);
 
     string name;
