@@ -1,11 +1,15 @@
 BUILD_DIR = build
+TEST_DIR = $(BUILD_DIR)/test
 
 .PHONY: test
 test: build
-	cd $(BUILD_DIR) && cmake .. && make all && cd test && ctest -V
+	cd $(TEST_DIR) && ctest -V
 
 build: checkout
-	mkdir $(BUILD_DIR)
+	mkdir $(BUILD_DIR) && cd $(BUILD_DIR) && cmake .. && make all
+
+check: checkout
+	cppcheck -i lib -i build -i cmake-build-debug .
 
 checkout:
 	git submodule init && git submodule update
