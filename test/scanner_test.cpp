@@ -151,3 +151,15 @@ TEST_P(StringParameterizedTestFixture, getNextTokenShouldReturnIdentifierToken) 
     EXPECT_EQ(STRING, token->type);
     EXPECT_EQ(str.substr(1, str.length() - 2), token->sValue);
 }
+
+TEST(ScannerTest, shouldParseStatement) {
+    Scanner scanner("int i = 0;");
+    Token *intToken = scanner.getNextToken();
+    EXPECT_EQ(KEYWORD, intToken->type);
+}
+
+TEST(ScannerTest, getNextTokenShouldIgnorSpace) {
+    Scanner scanner(" \t");
+    Token *token = scanner.getNextToken();
+    EXPECT_EQ(END, token->type);
+}

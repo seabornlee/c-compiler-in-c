@@ -64,55 +64,57 @@ bool isKeyword(const string &name) {
 }
 
 Token *Scanner::getNextToken() {
-    char ch = nextChar();
-    if (isLetter(ch) || isUnderline(ch)) {
-        string name = "";
-        do {
-            name.push_back(ch);
-            ch = nextChar();
-        } while (isLetter(ch) || isDigit(ch) || isUnderline(ch));
+    char ch;
+    while ((ch = nextChar()) != EOF) {
+        if (isLetter(ch) || isUnderline(ch)) {
+            string name = "";
+            do {
+                name.push_back(ch);
+                ch = nextChar();
+            } while (isLetter(ch) || isDigit(ch) || isUnderline(ch));
 
-        TokenType type = isKeyword(name) ? KEYWORD : ID;
-        return new Token(type, name);
-    }
-
-    if (isAssign(ch)) {
-        return new Token(ASSIGN, ch);
-    }
-
-    if (isOperator(ch)) {
-        char next = nextChar();
-        if (isAssign(next)) {
-            string name;
-            name.push_back(ch);
-            name.push_back(next);
-            return new Token(ASSIGN, name);
+            TokenType type = isKeyword(name) ? KEYWORD : ID;
+            return new Token(type, name);
         }
 
-        return new Token(OPERATOR, ch);
-    }
-
-    if (isSymbol(ch)) {
-        return new Token(SYMBOL, ch);
-    }
-
-    if (isDigit(ch)) {
-        string value;
-        do {
-            value.push_back(ch);
-            ch = nextChar();
-        } while (isDigit(ch));
-        return new Token(NUMBER, value);
-    }
-
-    if (isStartOfString(ch)) {
-        string value;
-        ch = nextChar();
-        while (isNotEndOfString(ch)) {
-            value.push_back(ch);
-            ch = nextChar();
+        if (isAssign(ch)) {
+            return new Token(ASSIGN, ch);
         }
-        return new Token(STRING, value);
+
+        if (isOperator(ch)) {
+            char next = nextChar();
+            if (isAssign(next)) {
+                string name;
+                name.push_back(ch);
+                name.push_back(next);
+                return new Token(ASSIGN, name);
+            }
+
+            return new Token(OPERATOR, ch);
+        }
+
+        if (isSymbol(ch)) {
+            return new Token(SYMBOL, ch);
+        }
+
+        if (isDigit(ch)) {
+            string value;
+            do {
+                value.push_back(ch);
+                ch = nextChar();
+            } while (isDigit(ch));
+            return new Token(NUMBER, value);
+        }
+
+        if (isStartOfString(ch)) {
+            string value;
+            ch = nextChar();
+            while (isNotEndOfString(ch)) {
+                value.push_back(ch);
+                ch = nextChar();
+            }
+            return new Token(STRING, value);
+        }
     }
 
     return new Token(END);
