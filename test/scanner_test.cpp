@@ -177,7 +177,7 @@ TEST(ScannerTest, shouldParseStatement) {
 
     Token *symbolToken = scanner.getNextToken();
     EXPECT_EQ(SYMBOL, symbolToken->type);
-    EXPECT_EQ(";", symbolToken->rawText);
+    EXPECT_EQ(";,", symbolToken->rawText);
 
     Token *endToken = scanner.getNextToken();
     EXPECT_EQ(END, endToken->type);
