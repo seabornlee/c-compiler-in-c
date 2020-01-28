@@ -6,6 +6,8 @@ Token::Token(TokenType type, string name) {
 
     if (type == NUMBER) {
         this->nValue = stoi(name);
+    } else if (type == STRING) {
+        this->sValue = name;
     }
 }
 

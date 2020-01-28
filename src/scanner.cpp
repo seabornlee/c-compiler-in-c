@@ -45,6 +45,14 @@ bool isSymbol(char ch) {
     return symbols.find(ch) != symbols.end();
 }
 
+bool isStartOfString(char ch) {
+    return ch == '"';
+}
+
+bool isNotEndOfString(char ch) {
+    return ch != '"';
+}
+
 bool isKeyword(const string &name) {
     std::set<string> keywords = {
             "int", "auto", "break", "case", "char", "const", "continue", "default", "do",
@@ -95,6 +103,16 @@ Token *Scanner::getNextToken() {
             ch = nextChar();
         } while (isDigit(ch));
         return new Token(NUMBER, value);
+    }
+
+    if (isStartOfString(ch)) {
+        string value;
+        ch = nextChar();
+        while (isNotEndOfString(ch)) {
+            value.push_back(ch);
+            ch = nextChar();
+        }
+        return new Token(STRING, value);
     }
 
     return new Token(END);

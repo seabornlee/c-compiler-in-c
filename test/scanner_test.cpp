@@ -78,6 +78,18 @@ INSTANTIATE_TEST_SUITE_P
         )
 );
 
+class StringParameterizedTestFixture : public ::testing::TestWithParam<string> {
+};
+
+INSTANTIATE_TEST_SUITE_P
+(
+        ScannerTest,
+        StringParameterizedTestFixture,
+        ::testing::Values(
+                "\"\"", "\"China\""
+        )
+);
+
 TEST(ScannerTest, getNextTokenShouldReturnEndWhenEnded) {
     Scanner scanner("");
     Token *token = scanner.getNextToken();
@@ -130,4 +142,12 @@ TEST_P(NumberParameterizedTestFixture, getNextTokenShouldReturnIdentifierToken) 
     Token *token = scanner.getNextToken();
     EXPECT_EQ(NUMBER, token->type);
     EXPECT_EQ(stoi(number), token->nValue);
+}
+
+TEST_P(StringParameterizedTestFixture, getNextTokenShouldReturnIdentifierToken) {
+    ParamType str = GetParam();
+    Scanner scanner(str);
+    Token *token = scanner.getNextToken();
+    EXPECT_EQ(STRING, token->type);
+    EXPECT_EQ(str.substr(1, str.length() - 2), token->sValue);
 }
