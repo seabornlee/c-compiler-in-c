@@ -38,7 +38,7 @@ INSTANTIATE_TEST_SUITE_P
         ScannerTest,
         AssignParameterizedTestFixture,
         ::testing::Values(
-                "="
+                "=", "+=", "-=", "*=", "/=", "%="
         )
 );
 

@@ -57,27 +57,25 @@ Token *Scanner::getNextToken() {
             ch = nextChar();
         } while (isLetter(ch) || isDigit(ch) || isUnderline(ch));
 
-        auto *token = new Token();
-        token->type = isKeyword(name) ? KEYWORD : ID;
-        token->name = name;
-        return token;
+        TokenType type = isKeyword(name) ? KEYWORD : ID;
+        return new Token(type, name);
     }
 
     if (isAssign(ch)) {
-        auto *token = new Token();
-        token->type = ASSIGN;
-        token->name = ch;
-        return token;
+        return new Token(ASSIGN, string(1, ch));
     }
 
     if (isOperator(ch)) {
-        auto *token = new Token();
-        token->type = OPERATOR;
-        token->name = ch;
-        return token;
+        char next = nextChar();
+        if (isAssign(next)) {
+            string name;
+            name.push_back(ch);
+            name.push_back(next);
+            return new Token(ASSIGN, name);
+        }
+
+        return new Token(OPERATOR, string(1, ch));
     }
 
-    Token *t = new Token();
-    t->type = END;
-    return t;
+    return new Token(END);
 }

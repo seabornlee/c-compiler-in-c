@@ -12,6 +12,10 @@ enum TokenType {
 class Token {
 public:
 
+    Token(TokenType type, string name);
+
+    Token(TokenType type);
+
     string name;
     TokenType type;
 };
