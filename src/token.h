@@ -6,7 +6,7 @@
 using namespace std;
 
 enum TokenType {
-    END, KEYWORD, ID, ASSIGN, OPERATOR
+    END, KEYWORD, ID, ASSIGN, OPERATOR, SYMBOL
 };
 
 class Token {

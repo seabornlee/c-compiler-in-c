@@ -54,6 +54,18 @@ INSTANTIATE_TEST_SUITE_P
         )
 );
 
+class SymbolParameterizedTestFixture : public ::testing::TestWithParam<string> {
+};
+
+INSTANTIATE_TEST_SUITE_P
+(
+        ScannerTest,
+        SymbolParameterizedTestFixture,
+        ::testing::Values(
+                "(", ")", "[", "]", "{", "}", "<", ">", ",", ";"
+        )
+);
+
 TEST(ScannerTest, getNextTokenShouldReturnEndWhenEnded) {
     Scanner scanner("");
     Token *token = scanner.getNextToken();
@@ -90,4 +102,12 @@ TEST_P(OperatorParameterizedTestFixture, getNextTokenShouldReturnIdentifierToken
     Token *token = scanner.getNextToken();
     EXPECT_EQ(OPERATOR, token->type);
     EXPECT_EQ(aOperator, token->name);
+}
+
+TEST_P(SymbolParameterizedTestFixture, getNextTokenShouldReturnIdentifierToken) {
+    ParamType symbol = GetParam();
+    Scanner scanner(symbol);
+    Token *token = scanner.getNextToken();
+    EXPECT_EQ(SYMBOL, token->type);
+    EXPECT_EQ(symbol, token->name);
 }

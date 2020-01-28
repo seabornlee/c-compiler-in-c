@@ -38,6 +38,13 @@ bool isOperator(char ch) {
     return operators.find(ch) != operators.end();
 }
 
+bool isSymbol(char ch) {
+    std::set<char> symbols = {
+            '(', ')', '[', ']', '{', '}', '<', '>', ',', ';'
+    };
+    return symbols.find(ch) != symbols.end();
+}
+
 bool isKeyword(const string &name) {
     std::set<string> keywords = {
             "int", "auto", "break", "case", "char", "const", "continue", "default", "do",
@@ -75,6 +82,10 @@ Token *Scanner::getNextToken() {
         }
 
         return new Token(OPERATOR, string(1, ch));
+    }
+
+    if (isSymbol(ch)) {
+        return new Token(SYMBOL, string(1, ch));
     }
 
     return new Token(END);
