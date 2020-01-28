@@ -7,4 +7,6 @@ jobs:
     name: Google Test
     runs-on: ubuntu-latest
     steps:
-      - run: make test
+      - uses: actions/checkout@v1
+      - name: test
+        run: make test
