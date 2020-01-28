@@ -26,7 +26,7 @@ INSTANTIATE_TEST_SUITE_P
         ScannerTest,
         IdentifierParameterizedTestFixture,
         ::testing::Values(
-                "i", "name", "nextChar", "p0", "next_char", "_name"
+                "i", "rawText", "nextChar", "p0", "next_char", "_name"
         )
 );
 
@@ -101,7 +101,7 @@ TEST_P(KeywordParameterizedTestFixture, getNextTokenShouldReturnKeywordToken) {
     Scanner scanner(keyword);
     Token *token = scanner.getNextToken();
     EXPECT_EQ(KEYWORD, token->type);
-    EXPECT_EQ(keyword, token->name);
+    EXPECT_EQ(keyword, token->rawText);
 }
 
 TEST_P(IdentifierParameterizedTestFixture, getNextTokenShouldReturnIdentifierToken) {
@@ -109,7 +109,7 @@ TEST_P(IdentifierParameterizedTestFixture, getNextTokenShouldReturnIdentifierTok
     Scanner scanner(identifier);
     Token *token = scanner.getNextToken();
     EXPECT_EQ(ID, token->type);
-    EXPECT_EQ(identifier, token->name);
+    EXPECT_EQ(identifier, token->rawText);
 }
 
 TEST_P(AssignParameterizedTestFixture, getNextTokenShouldReturnIdentifierToken) {
@@ -117,7 +117,7 @@ TEST_P(AssignParameterizedTestFixture, getNextTokenShouldReturnIdentifierToken) 
     Scanner scanner(assign);
     Token *token = scanner.getNextToken();
     EXPECT_EQ(ASSIGN, token->type);
-    EXPECT_EQ(assign, token->name);
+    EXPECT_EQ(assign, token->rawText);
 }
 
 TEST_P(OperatorParameterizedTestFixture, getNextTokenShouldReturnIdentifierToken) {
@@ -125,7 +125,7 @@ TEST_P(OperatorParameterizedTestFixture, getNextTokenShouldReturnIdentifierToken
     Scanner scanner(aOperator);
     Token *token = scanner.getNextToken();
     EXPECT_EQ(OPERATOR, token->type);
-    EXPECT_EQ(aOperator, token->name);
+    EXPECT_EQ(aOperator, token->rawText);
 }
 
 TEST_P(SymbolParameterizedTestFixture, getNextTokenShouldReturnIdentifierToken) {
@@ -133,7 +133,7 @@ TEST_P(SymbolParameterizedTestFixture, getNextTokenShouldReturnIdentifierToken) 
     Scanner scanner(symbol);
     Token *token = scanner.getNextToken();
     EXPECT_EQ(SYMBOL, token->type);
-    EXPECT_EQ(symbol, token->name);
+    EXPECT_EQ(symbol, token->rawText);
 }
 
 TEST_P(NumberParameterizedTestFixture, getNextTokenShouldReturnIdentifierToken) {

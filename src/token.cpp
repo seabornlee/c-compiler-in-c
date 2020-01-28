@@ -1,19 +1,19 @@
 #include "token.h"
 
-Token::Token(TokenType type, string name) {
+Token::Token(TokenType type, string rawText) {
     this->type = type;
-    this->name = name;
+    this->rawText = rawText;
 
     if (type == NUMBER) {
-        this->nValue = stoi(name);
+        this->nValue = stoi(rawText);
     } else if (type == STRING) {
-        this->sValue = name;
+        this->sValue = rawText;
     }
 }
 
 Token::Token(TokenType type, char ch) {
     this->type = type;
-    this->name = string(1, ch);
+    this->rawText = string(1, ch);
 }
 
 Token::Token(TokenType type) {

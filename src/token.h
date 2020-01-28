@@ -12,13 +12,13 @@ enum TokenType {
 class Token {
 public:
 
-    Token(TokenType type, string name);
+    Token(TokenType type, string rawText);
 
     Token(TokenType type, char ch);
 
     Token(TokenType type);
 
-    string name;
+    string rawText;
     TokenType type;
     int nValue;
     string sValue;
