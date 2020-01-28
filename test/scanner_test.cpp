@@ -26,7 +26,7 @@ INSTANTIATE_TEST_SUITE_P
         ScannerTest,
         IdentifierParameterizedTestFixture,
         ::testing::Values(
-                "i", "rawText", "nextChar", "p0", "next_char", "_name"
+                "i", "rawText", "moveToNextChar", "p0", "next_char", "_name"
         )
 );
 

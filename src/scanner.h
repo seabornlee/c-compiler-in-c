@@ -2,13 +2,46 @@
 #include "token.h"
 
 class Scanner {
-    public:
-        Scanner(std::string text);
-        Token *getNextToken();
+public:
+    Scanner(std::string text);
 
-        string text;
+    Token *getNextToken();
+
+    string text;
 private:
-    char nextChar();
     int index;
-    char currentChar = '\0';
+
+    char currentChar();
+
+    void moveToNextChar();
+
+    Token *tokenizeIdOrKeyword();
+
+    Token *tokenizeAssign();
+
+    Token *tokenizeOperatorOrAssign();
+
+    Token *tokenizeSymbol();
+
+    Token *tokenizeNumber();
+
+    Token *tokenizeString();
+
+    bool isSpace();
+
+    bool isLetter();
+
+    bool isDigit();
+
+    bool isUnderline();
+
+    bool isAssign();
+
+    bool isOperator();
+
+    bool isSymbol();
+
+    bool isStartOfString();
+
+    bool isNotEndOfString();
 };

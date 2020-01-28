@@ -4,53 +4,53 @@
 
 Scanner::Scanner(std::string text) {
     this->text = text;
-    this->index = 0;
+    index = 0;
 }
 
-char Scanner::nextChar() {
-    if (index < this->text.length()) {
-        return this->text.at(index++);
-    }
-
-    return EOF;
+void Scanner::moveToNextChar() {
+    index++;
 }
 
-bool isLetter(char ch) {
-    return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z');
+bool Scanner::isLetter() {
+    return (currentChar() >= 'a' && currentChar() <= 'z') || (currentChar() >= 'A' && currentChar() <= 'Z');
 }
 
-bool isDigit(char ch) {
-    return ch >= '0' && ch <= '9';
+bool Scanner::isDigit() {
+    return currentChar() >= '0' && currentChar() <= '9';
 }
 
-bool isUnderline(char ch) {
-    return ch == '_';
+bool Scanner::isUnderline() {
+    return currentChar() == '_';
 }
 
-bool isAssign(char ch) {
-    return ch == '=';
+bool Scanner::isAssign() {
+    return currentChar() == '=';
 }
 
-bool isOperator(char ch) {
+bool Scanner::isOperator() {
     std::set<char> operators = {
             '+', '-', '*', '/', '%'
     };
-    return operators.find(ch) != operators.end();
+    return operators.find(currentChar()) != operators.end();
 }
 
-bool isSymbol(char ch) {
+bool Scanner::isSymbol() {
     std::set<char> symbols = {
             '(', ')', '[', ']', '{', '}', '<', '>', ',', ';'
     };
-    return symbols.find(ch) != symbols.end();
+    return symbols.find(currentChar()) != symbols.end();
 }
 
-bool isStartOfString(char ch) {
-    return ch == '"';
+bool Scanner::isStartOfString() {
+    return currentChar() == '"';
 }
 
-bool isNotEndOfString(char ch) {
-    return ch != '"';
+bool Scanner::isNotEndOfString() {
+    return currentChar() != '"';
+}
+
+bool Scanner::isSpace() {
+    return currentChar() == ' ' || currentChar() == '\t';
 }
 
 bool isKeyword(const string &name) {
@@ -64,64 +64,102 @@ bool isKeyword(const string &name) {
 }
 
 Token *Scanner::getNextToken() {
-    while (currentChar != EOF) {
-        if (isLetter(currentChar) || isUnderline(currentChar)) {
-            string name = "";
-            do {
-                name.push_back(currentChar);
-                currentChar = nextChar();
-            } while (isLetter(currentChar) || isDigit(currentChar) || isUnderline(currentChar));
-
-            TokenType type = isKeyword(name) ? KEYWORD : ID;
-            return new Token(type, name);
+    while (currentChar() != EOF) {
+        if (isSpace()) {
+            moveToNextChar();
+            continue;
         }
 
-        if (isAssign(currentChar)) {
-            char ch = currentChar;
-            currentChar = nextChar();
-            return new Token(ASSIGN, ch);
+        if (isLetter() || isUnderline()) {
+            return tokenizeIdOrKeyword();
         }
 
-        if (isOperator(currentChar)) {
-            char next = nextChar();
-            if (isAssign(next)) {
-                string name;
-                name.push_back(currentChar);
-                name.push_back(next);
-                return new Token(ASSIGN, name);
-            }
-
-            return new Token(OPERATOR, currentChar);
+        if (isAssign()) {
+            return tokenizeAssign();
         }
 
-        if (isSymbol(currentChar)) {
-            char ch = currentChar;
-            currentChar = nextChar();
-            return new Token(SYMBOL, ch);
+        if (isOperator()) {
+            return tokenizeOperatorOrAssign();
         }
 
-        if (isDigit(currentChar)) {
-            string value;
-            do {
-                value.push_back(currentChar);
-                currentChar = nextChar();
-            } while (isDigit(currentChar));
-
-            return new Token(NUMBER, value);
+        if (isSymbol()) {
+            return tokenizeSymbol();
         }
 
-        if (isStartOfString(currentChar)) {
-            string value;
-            currentChar = nextChar();
-            while (isNotEndOfString(currentChar)) {
-                value.push_back(currentChar);
-                currentChar = nextChar();
-            }
-            return new Token(STRING, value);
+        if (isDigit()) {
+            return tokenizeNumber();
         }
 
-        currentChar = nextChar();
+        if (isStartOfString()) {
+            return tokenizeString();
+        }
+
+        moveToNextChar();
     }
 
     return new Token(END);
+}
+
+Token *Scanner::tokenizeString() {
+    string value;
+    moveToNextChar(); // skip left "
+    while (isNotEndOfString()) {
+        value.push_back(currentChar());
+        moveToNextChar();
+    }
+    return new Token(STRING, value);
+}
+
+Token *Scanner::tokenizeNumber() {
+    string value;
+    do {
+        value.push_back(currentChar());
+        moveToNextChar();
+    } while (isDigit());
+
+    return new Token(NUMBER, value);
+}
+
+Token *Scanner::tokenizeSymbol() {
+    char ch = currentChar();
+    moveToNextChar();
+    return new Token(SYMBOL, ch);
+}
+
+Token *Scanner::tokenizeOperatorOrAssign() {
+    string name;
+    name.push_back(currentChar());
+
+    moveToNextChar();
+    if (isAssign()) {
+        name.push_back(currentChar());
+        return new Token(ASSIGN, name);
+    }
+
+    return new Token(OPERATOR, name);
+}
+
+Token *Scanner::tokenizeAssign() {
+    char ch = currentChar();
+    moveToNextChar();
+    return new Token(ASSIGN, ch);
+}
+
+Token *Scanner::tokenizeIdOrKeyword() {
+    string name = "";
+    do {
+        name.push_back(currentChar());
+        moveToNextChar();
+    } while (isLetter() || isDigit() || isUnderline());
+
+    TokenType type = isKeyword(name) ? KEYWORD : ID;
+    return new Token(type, name);
+}
+
+char Scanner::currentChar() {
+    if (index < text.length()) {
+        return text.at(index);
+    }
+
+    return EOF;
 }
