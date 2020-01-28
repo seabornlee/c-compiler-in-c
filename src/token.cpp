@@ -3,6 +3,10 @@
 Token::Token(TokenType type, string name) {
     this->type = type;
     this->name = name;
+
+    if (type == NUMBER) {
+        this->nValue = stoi(name);
+    }
 }
 
 Token::Token(TokenType type, char ch) {

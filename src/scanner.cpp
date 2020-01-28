@@ -88,5 +88,14 @@ Token *Scanner::getNextToken() {
         return new Token(SYMBOL, ch);
     }
 
+    if (isDigit(ch)) {
+        string value;
+        do {
+            value.push_back(ch);
+            ch = nextChar();
+        } while (isDigit(ch));
+        return new Token(NUMBER, value);
+    }
+
     return new Token(END);
 }

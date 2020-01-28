@@ -66,6 +66,18 @@ INSTANTIATE_TEST_SUITE_P
         )
 );
 
+class NumberParameterizedTestFixture : public ::testing::TestWithParam<string> {
+};
+
+INSTANTIATE_TEST_SUITE_P
+(
+        ScannerTest,
+        NumberParameterizedTestFixture,
+        ::testing::Values(
+                "0", "123"
+        )
+);
+
 TEST(ScannerTest, getNextTokenShouldReturnEndWhenEnded) {
     Scanner scanner("");
     Token *token = scanner.getNextToken();
@@ -110,4 +122,12 @@ TEST_P(SymbolParameterizedTestFixture, getNextTokenShouldReturnIdentifierToken) 
     Token *token = scanner.getNextToken();
     EXPECT_EQ(SYMBOL, token->type);
     EXPECT_EQ(symbol, token->name);
+}
+
+TEST_P(NumberParameterizedTestFixture, getNextTokenShouldReturnIdentifierToken) {
+    ParamType number = GetParam();
+    Scanner scanner(number);
+    Token *token = scanner.getNextToken();
+    EXPECT_EQ(NUMBER, token->type);
+    EXPECT_EQ(stoi(number), token->nValue);
 }
