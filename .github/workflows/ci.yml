@@ -4,5 +4,7 @@ on: [push]
 
 jobs:
   test:
+    name: Google Test
+    runs-on: ubuntu-latest
     steps:
       - run: make test
