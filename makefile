@@ -9,7 +9,7 @@ build: checkout
 	mkdir $(BUILD_DIR) && cd $(BUILD_DIR) && cmake .. && make all
 
 check: checkout
-	cppcheck -i lib -i build -i cmake-build-debug .
+	cppcheck --error-exitcode=1 -i lib -i build -i cmake-build-debug .
 
 checkout:
 	git submodule init && git submodule update
